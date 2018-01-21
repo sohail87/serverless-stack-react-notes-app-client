@@ -1,5 +1,6 @@
 export default {
-  MAX_ATTACHMENT_SIZE: 5000000,  
+  MAX_ATTACHMENT_SIZE: 5000000, 
+  BUCKET: "notes-app-item-uploads",  
   apiGateway: {
     URL: "https://tfogus2j8g.execute-api.eu-west-1.amazonaws.com/prod",
     REGION: "eu-west-1"
