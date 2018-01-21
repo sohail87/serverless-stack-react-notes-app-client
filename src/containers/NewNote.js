@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { invokeApig } from "../libs/awsLib";
+
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import "./NewNote.css";
@@ -32,13 +34,31 @@ export default class NewNote extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-
+  
     if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
       alert("Please pick a file smaller than 5MB");
       return;
     }
-
+  
     this.setState({ isLoading: true });
+  
+    try {
+      await this.createNote({
+        content: this.state.content
+      });
+      this.props.history.push("/");
+    } catch (e) {
+      alert(e);
+      this.setState({ isLoading: false });
+    }
+  }
+  
+  createNote(note) {
+    return invokeApig({
+      path: "/notes",
+      method: "POST",
+      body: note
+    });
   }
 
   render() {
