@@ -1,7 +1,7 @@
 export default {
   MAX_ATTACHMENT_SIZE: 5000000, 
   s3: {
-    BUCKET: "YOUR_S3_UPLOADS_BUCKET_NAME"
+    BUCKET: "notes-app-item-uploads"
   },
   apiGateway: {
     URL: "https://tfogus2j8g.execute-api.eu-west-1.amazonaws.com/prod",
