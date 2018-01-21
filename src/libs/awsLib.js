@@ -66,6 +66,11 @@ export function signOutUser() {
   if (currentUser !== null) {
     currentUser.signOut();
   }
+
+  if (AWS.config.credentials) {
+    AWS.config.credentials.clearCachedId();
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({});
+  }
 }
 
 export async function invokeApig({
@@ -121,8 +126,11 @@ export async function s3Upload(file) {
       Bucket: config.s3.BUCKET
     }
   });
+  console.log(s3);
+  
   const filename = `${AWS.config.credentials
     .identityId}-${Date.now()}-${file.name}`;
+  console.log(filename);
 
   return s3
     .upload({
