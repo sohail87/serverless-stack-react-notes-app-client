@@ -81,7 +81,7 @@ export default class Notes extends Component {
           .Location;
       }
       // TODO: delete existing file from s3 
-      
+
       await this.saveNote({
         ...this.state.note,
         content: this.state.content,
@@ -94,19 +94,35 @@ export default class Notes extends Component {
     }
   }
   
-  handleDelete = async event => {
-    event.preventDefault();
-  
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this note?"
-    );
-  
-    if (!confirmed) {
-      return;
-    }
-  
-    this.setState({ isDeleting: true });
+deleteNote() {
+  return invokeApig({
+    path: `/notes/${this.props.match.params.id}`,
+    method: "DELETE"
+  });
+}
+
+handleDelete = async event => {
+  event.preventDefault();
+
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this note?"
+  );
+
+  if (!confirmed) {
+    return;
   }
+
+  this.setState({ isDeleting: true });
+
+  try {
+    await this.deleteNote();
+    //TODO: DELETE ATTACHMENT
+    this.props.history.push("/");
+  } catch (e) {
+    alert(e);
+    this.setState({ isDeleting: false });
+  }
+}
   
   render() {
     return (
